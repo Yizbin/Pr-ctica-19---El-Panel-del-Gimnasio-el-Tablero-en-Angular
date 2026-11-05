@@ -1,0 +1,14 @@
+<div class="card">
+  <img [src]="'img/' + clase().imagen" [alt]="clase().nombre" class="card-img" />
+  <div class="card-body">
+    <div class="card-header">
+      <h3>{{ clase().nombre }}</h3>
+      @if (clase().duracionMin >= 60) {
+        <span class="badge badge-larga">Larga</span>
+      }
+    </div>
+    <p class="categoria">{{ clase().categoria }}</p>
+    <p class="descripcion">{{ clase().descripcion }}</p>
+    <p class="duracion">⏱️ {{ clase().duracionMin }} minutos</p>
+  </div>
+</div>
