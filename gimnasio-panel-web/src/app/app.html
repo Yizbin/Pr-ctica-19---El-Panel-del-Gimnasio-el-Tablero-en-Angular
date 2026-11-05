@@ -1,33 +1,50 @@
-<main class="container">
-  <h1>Panel del Gimnasio</h1>
-
-  <section class="resumen-grid">
-    <div class="resumen-card">
-      <h4>Total Clases</h4>
-      <p>{{ totalClases() }}</p>
-    </div>
-    <div class="resumen-card">
-      <h4>Minutos a la Semana</h4>
-      <p>{{ minutosTotales() }} min</p>
-    </div>
-    <div class="resumen-card">
-      <h4>Clases ≥ 1 hora</h4>
-      <p>{{ clasesLargas() }}</p>
-    </div>
-  </section>
-
-  <div class="acciones">
-    <button (click)="vaciarCatalogo()" class="btn btn-danger">Vaciar Catálogo</button>
-    <button (click)="restaurarCatalogo()" class="btn btn-primary">Restaurar Catálogo</button>
+<header class="barra">
+  <div class="barra__interior">
+    <span class="barra__marca">
+      <img src="/logo.svg" alt="" /> Gimnasio Titanes
+      <span class="barra__etiqueta">Admin</span>
+    </span>
   </div>
+</header>
 
-  <section class="grid-clases">
-    @for (clase of clases(); track clase.id) {
-      <app-tarjeta-clase [clase]="clase" />
-    } @empty {
-      <div class="mensaje-vacio">
-        <p>No hay clases disponibles en este momento.</p>
-      </div>
-    }
-  </section>
+<main class="pagina">
+    <div class="encabezado">
+        <h1>Cátalogo de clases</h1>
+        <p>Estos datos son del archivo local</p>
+    </div>
+    <section class="resumen">
+        <div class="resumen__dato">
+            <span class="resumen__numero">{{ catalogo.visibles().length }}</span>
+            <span class="resumen__texto">clases en el cátalogo</span>
+        </div>
+        <div class="resumen__dato">
+            <span class="resumen__numero">{{ catalogo.minutosTotales() }}</span>
+            <span class="resumen__texto">minutos a la semana</span>
+        </div>
+    </section>
+
+    <app-filtro-categoria></app-filtro-categoria>
+
+        <div class="tablero">
+        <div class="rejilla">
+            @for (clase of catalogo.visibles(); track clase.id) {
+                <app-tarjeta-clase
+                    [clase]="clase"
+                    [activa]="clase.id === catalogo.seleccion()?.id"
+                    (seleccion)="catalogo.seleccionar($event)">
+                </app-tarjeta-clase>
+            } @empty {
+                <p class="vacio">No hay clases disponibles</p>
+            }
+        </div>
+
+        <aside class="tarjeta lateral">
+            @if (catalogo.seleccion(); as c) {
+                <img [src]="c.imagen" [alt]="c.nombre" />
+                <h2>{{ c.nombre }}</h2>
+                <p>{{ c.descripcion }}</p>
+            }
+        </aside>
+    </div>
+
 </main>

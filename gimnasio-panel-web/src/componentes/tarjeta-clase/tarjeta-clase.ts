@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output} from '@angular/core';
 import { Clase } from '../../modelos/clase';
 
 @Component({
@@ -9,5 +9,9 @@ import { Clase } from '../../modelos/clase';
   styleUrl: './tarjeta-clase.css'
 })
 export class TarjetaClase {
-  clase = input.required<Clase>();
+  readonly clase = input.required<Clase>();
+
+  readonly activa = input(false);
+
+  readonly seleccion = output<Clase>();
 }

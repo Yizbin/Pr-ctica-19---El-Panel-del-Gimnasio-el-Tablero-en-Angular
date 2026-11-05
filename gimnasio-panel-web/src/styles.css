@@ -40,7 +40,6 @@ h3 { font-size: 1rem; }
 p { margin: 0 0 0.7rem; }
 a { color: var(--azul); }
 
-/* --- el marco ----------------------------------------------------------- */
 .pagina { max-width: 1040px; margin: 0 auto; padding: 1.4rem 1.2rem 3rem; }
 
 .barra { background: var(--tinta); color: var(--blanco); }

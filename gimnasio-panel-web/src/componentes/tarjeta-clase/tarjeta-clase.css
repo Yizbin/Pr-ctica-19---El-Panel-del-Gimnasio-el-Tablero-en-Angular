@@ -1,0 +1,54 @@
+
+.tarjeta-clase {
+  background: var(--blanco);
+  border: 2px solid var(--linea);
+  border-radius: var(--radio);
+  overflow: hidden;
+  box-shadow: var(--sombra);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+}
+
+.tarjeta-clase:hover {
+  box-shadow: var(--sombra-alta);
+  transform: translateY(-2px);
+}
+
+.tarjeta-clase img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+  background: var(--linea);
+}
+
+.tarjeta-clase__cuerpo {
+  padding: 0.9rem 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1;
+}
+
+.tarjeta-clase__nombre {
+  font-weight: 700;
+  color: var(--tinta);
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+.clase__desc {
+  font-size: 0.9rem;
+  color: var(--texto);
+  margin-bottom: 0.5rem;
+}
+
+.tarjeta-clase__pie {
+  margin-top: auto;
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  align-items: center;
+}

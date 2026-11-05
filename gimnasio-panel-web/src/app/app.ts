@@ -1,31 +1,15 @@
-import { Component, signal, computed } from '@angular/core';
-import { CLASES_LOCALES } from '../datos/clases-locales';
-import { Clase } from '../modelos/clase';
+import { inject, Component} from '@angular/core';
 import { TarjetaClase } from '../componentes/tarjeta-clase/tarjeta-clase';
+import { Catalogo } from '../servicios/catalogo';
+import { FiltroCategoria } from './componentes/filtro-categoria/filtro-categoria';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [TarjetaClase],
+  imports: [TarjetaClase, FiltroCategoria],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
-  clases = signal<Clase[]>(CLASES_LOCALES);
-
-  totalClases = computed(() => this.clases().length);
-  minutosTotales = computed(() => 
-    this.clases().reduce((acc, c) => acc + c.duracionMin, 0)
-  );
-  clasesLargas = computed(() => 
-    this.clases().filter(c => c.duracionMin >= 60).length
-  );
-
-  vaciarCatalogo() {
-    this.clases.set([]);
+  protected readonly catalogo = inject(Catalogo);
   }
-
-  restaurarCatalogo() {
-    this.clases.set(CLASES_LOCALES);
-  }
-}

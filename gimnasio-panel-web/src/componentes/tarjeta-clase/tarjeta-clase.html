@@ -1,14 +1,17 @@
-<div class="card">
-  <img [src]="'img/' + clase().imagen" [alt]="clase().nombre" class="card-img" />
-  <div class="card-body">
-    <div class="card-header">
-      <h3>{{ clase().nombre }}</h3>
+<article class="tarjeta-clase" [class.tarjeta-clase--activa]="activa()" (click)="seleccion.emit(clase())">
+  <img [src]="clase().imagen" [alt]="clase().nombre" />
+  
+  <div class="tarjeta-clase__cuerpo">
+    <h3 class="tarjeta-clase__nombre">{{ clase().nombre }}</h3>
+    <p class="clase__desc">{{ clase().descripcion }}</p>
+    
+    <div class="tarjeta-clase__pie">
+      <span class="etiqueta">{{ clase().categoria }}</span>
+      <span class="etiqueta etiqueta--min">⏱️ {{ clase().duracionMin }} min</span>
+      
       @if (clase().duracionMin >= 60) {
-        <span class="badge badge-larga">Larga</span>
+        <span class="etiqueta etiqueta--larga">Larga</span>
       }
     </div>
-    <p class="categoria">{{ clase().categoria }}</p>
-    <p class="descripcion">{{ clase().descripcion }}</p>
-    <p class="duracion">⏱️ {{ clase().duracionMin }} minutos</p>
   </div>
-</div>
+</article>  
