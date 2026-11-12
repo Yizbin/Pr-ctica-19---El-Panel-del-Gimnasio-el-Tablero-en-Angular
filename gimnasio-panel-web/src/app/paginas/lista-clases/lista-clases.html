@@ -1,39 +1,46 @@
 <div class="encabezado">
-        <h1>Cátalogo de clases</h1>
-        <p>Estos datos son del archivo local</p>
-        <a routerLink="/clases/nueva" class="boton">+ Nueva Clase</a>
+    <h1>Cátalogo de clases</h1>
+    <p>Estos datos son del archivo local</p>
+    <a routerLink="/clases/nueva" class="boton">+ Nueva Clase</a>
+</div>
+<section class="resumen">
+    <div class="resumen__dato">
+        <span class="resumen__numero">{{ catalogo.visibles().length }}</span>
+        <span class="resumen__texto">clases en el cátalogo</span>
     </div>
-    <section class="resumen">
-        <div class="resumen__dato">
-            <span class="resumen__numero">{{ catalogo.visibles().length }}</span>
-            <span class="resumen__texto">clases en el cátalogo</span>
-        </div>
-        <div class="resumen__dato">
-            <span class="resumen__numero">{{ catalogo.minutosTotales() }}</span>
-            <span class="resumen__texto">minutos a la semana</span>
-        </div>
-    </section>
-
-    <app-filtro-categoria></app-filtro-categoria>
-
-        <div class="tablero">
-        <div class="rejilla">
-            @for (clase of catalogo.visibles(); track clase.id) {
-                <app-tarjeta-clase
-                    [clase]="clase"
-                    [activa]="clase.id === catalogo.seleccion()?.id"
-                    (seleccion)="catalogo.seleccionar($event)">
-                </app-tarjeta-clase>
-            } @empty {
-                <p class="vacio">No hay clases disponibles</p>
-            }
-        </div>
-
-        <aside class="tarjeta lateral">
-            @if (catalogo.seleccion(); as c) {
-                <img [src]="c.imagen" [alt]="c.nombre" />
-                <h2>{{ c.nombre }}</h2>
-                <p>{{ c.descripcion }}</p>
-            }
-        </aside>
+    <div class="resumen__dato">
+        <span class="resumen__numero">{{ catalogo.minutosTotales() }}</span>
+        <span class="resumen__texto">minutos a la semana</span>
     </div>
+</section>
+
+<app-filtro-categoria></app-filtro-categoria>
+
+@if (catalogo.error(); as error) {
+<div class="avisdo aviso==error">{{ error }}</div>
+} @else if (catalogo.cargando()) {
+<div class="rejilla">
+    <div class="esqueleto"></div>
+    <div class="esqueleto"></div>
+    <div class="esqueleto"></div>
+</div>
+}
+<div class="tablero">
+    <div class="rejilla">
+        @for (clase of catalogo.visibles(); track clase.id) {
+        <app-tarjeta-clase [clase]="clase" [activa]="clase.id === catalogo.seleccion()?.id"
+            (seleccion)="catalogo.seleccionar($event)">
+        </app-tarjeta-clase>
+        } @empty {
+        <p class="vacio">No hay clases disponibles</p>
+        }
+    </div>
+
+    <aside class="tarjeta lateral">
+        @if (catalogo.seleccion(); as c) {
+        <img [src]="apiURL + c.imagen" [alt]="c.nombre" />
+        <h2>{{ c.nombre }}</h2>
+        <p>{{ c.descripcion }}</p>
+        }
+    </aside>
+</div>

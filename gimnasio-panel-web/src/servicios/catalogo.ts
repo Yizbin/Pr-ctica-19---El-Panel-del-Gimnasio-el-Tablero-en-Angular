@@ -1,10 +1,23 @@
-import { signal, computed, Service } from '@angular/core';
-import { CLASES_LOCALES } from '../datos/clases-locales';
-import { Categoria, Clase } from '../modelos/clase';
+import { Injectable, signal, computed } from '@angular/core';
+import { httpResource } from '@angular/common/http';
+import { Categoria, Clase, Sobre } from '../modelos/clase';
+import { API_URL } from '../app/config';
+import { mensajeDeApi } from './errores';
 
-@Service()
+@Injectable({
+    providedIn: 'root',
+})
 export class Catalogo {
-    private readonly clases = signal<Clase[]>(CLASES_LOCALES);
+    private readonly recurso = httpResource<Sobre<Clase[]>>(() => `${API_URL}/clases`)
+
+    private readonly clases = computed(() => this.recurso.value()?.data ?? []);
+
+    readonly cargando = computed(() => this.recurso.isLoading());
+
+    readonly error = computed(() => {
+        const e = this.recurso.error();
+        return e ? mensajeDeApi(e) : null;
+    });
 
     readonly categoria = signal<Categoria | 'todas'>('todas');
 
@@ -32,5 +45,10 @@ export class Catalogo {
     seleccionar(clase: Clase): void {
         //set remplaza el valor de la variable y update hace lo mismo pero tiene acceso a la variable actual
         this.seleccion.update((actual) => (actual?.id === clase.id ? null : clase));
+    }
+
+    recargar(): void{
+        this.seleccion.set(null);
+        this.recurso.reload();
     }
 }
