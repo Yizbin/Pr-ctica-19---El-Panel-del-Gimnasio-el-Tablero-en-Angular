@@ -1,12 +1,12 @@
 # Práctica 19 - El Panel del Gimnasio: El Tablero en Angular
 
-## Respuestas del Ejercicio 1[cite: 2]
+## Respuestas del Ejercicio 1
 
 * **`main.tsx` → `src/main.ts`**: Es el punto de entrada de la aplicación que arranca (`bootstrapApplication`) el componente principal (`App`).
 * **`App.tsx` → `src/app/app.ts`**: Es el componente raíz/contenedor de la interfaz de usuario.
 * **`vite.config.ts` → `angular.json`**: Es la configuración del bundler y herramientas del CLI (rutas de assets, compilación, estilos globales, etc.).
 
-## Respuestas del Ejercicio 2[cite: 2]
+## Respuestas del Ejercicio 2
 
 * **¿Por qué `clase()` lleva paréntesis?**
   Porque en las versiones recientes de Angular, `input()` declara una **Signal** (Input Signal). Para leer su valor primitivo u objeto dentro de TypeScript o el template HTML, se debe invocar la Signal ejecuntando sus paréntesis `()`.
