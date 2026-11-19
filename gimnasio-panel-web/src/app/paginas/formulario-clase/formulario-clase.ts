@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { Categoria, CATEGORIAS } from '../../../modelos/clase';
@@ -27,8 +27,18 @@ export class FormularioClase {
   private readonly api = inject(ClasesApi);
   private readonly catalogo = inject(Catalogo);
   private readonly router = inject(Router);
+  readonly id = input<string>();
   protected readonly guardando = signal(false);
   protected readonly erroresServidor = signal<string[]>([]);
+
+  ngOnInit(): void {
+    const id = this.id();
+    if (!id) return;
+    this.api.obtener(Number(id)).subscribe({
+      next: (clase) => this.form.patchValue(clase),
+      error: (e) => this.erroresServidor.set([mensajeDeApi(e)])
+    })
+  }
 
 
   protected readonly form = inject(FormBuilder).nonNullable.group({
@@ -49,17 +59,23 @@ export class FormularioClase {
       return;
     }
 
-    this,this.guardando.set(true);
+    this, this.guardando.set(true);
     this.erroresServidor.set([]);
 
-    this,this.api.crear(this.form.getRawValue()).subscribe({
-      next: ()=>{
+    const datos = this.form.getRawValue();
+
+    const id = this.id();
+
+    const peticion = id ? this.api.actualizar(Number(id), datos) : this.api.crear(datos);
+
+    peticion.subscribe({
+      next: () => {
         this.catalogo.recargar();
         this.router.navigate(["/clases"]);
-      }, 
+      },
       error: (e: HttpErrorResponse) => {
-        const mensajes = e.status == 400 ? mensajesDelCuerpo(e.error): [];
-        this,this.erroresServidor.set(mensajes.length ? mensajes : [mensajeDeApi(e)]);
+        const mensajes = e.status === 400 ? mensajesDelCuerpo(e.error) : [];
+        this.erroresServidor.set(mensajes.length ? mensajes : [mensajeDeApi(e)]);
         this.guardando.set(false);
       }
     })

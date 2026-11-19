@@ -1,30 +1,36 @@
 <div class="encabezado">
-    <h1>Cátalogo de clases</h1>
+    <h1>Catálogo de clases</h1>
     <p>Estos datos son del archivo local</p>
     <a routerLink="/clases/nueva" class="boton">+ Nueva Clase</a>
 </div>
 <section class="resumen">
     <div class="resumen__dato">
         <span class="resumen__numero">{{ catalogo.visibles().length }}</span>
-        <span class="resumen__texto">clases en el cátalogo</span>
+        <span class="resumen__texto">clases en el catálogo</span>
     </div>
     <div class="resumen__dato">
         <span class="resumen__numero">{{ catalogo.minutosTotales() }}</span>
         <span class="resumen__texto">minutos a la semana</span>
     </div>
 </section>
+<div class="buscador">
+    <input type="search" [formControl]="busqueda" placeholder="Buscar por nombre: yoga, box">
+    <span class="buscador__estado">
+        @if(catalogo.cargando()) { buscando... }
+    </span>
+</div>
 
 <app-filtro-categoria></app-filtro-categoria>
 
 @if (catalogo.error(); as error) {
-<div class="avisdo aviso==error">{{ error }}</div>
+<div class="aviso aviso--error">{{ error }}</div>
 } @else if (catalogo.cargando()) {
 <div class="rejilla">
     <div class="esqueleto"></div>
     <div class="esqueleto"></div>
     <div class="esqueleto"></div>
 </div>
-}
+} @else {
 <div class="tablero">
     <div class="rejilla">
         @for (clase of catalogo.visibles(); track clase.id) {
@@ -41,6 +47,11 @@
         <img [src]="apiURL + c.imagen" [alt]="c.nombre" />
         <h2>{{ c.nombre }}</h2>
         <p>{{ c.descripcion }}</p>
+        <div class="acciones">
+            <a class="boton" [routerLink]="['/clases', c.id, 'editar']">Editar</a>
+            <button type="button" class="boton" (click)="eliminar(c.id)">Eliminar</button>
+        </div>
         }
     </aside>
 </div>
+}

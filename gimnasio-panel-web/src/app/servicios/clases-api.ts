@@ -15,4 +15,22 @@ export class ClasesApi {
             .post<Sobre<Clase>>(`${API_URL}/clases`, datos)
             .pipe(map((r) => r.data));
     }
+
+    obtener(id: number) {
+        return this.http.get<Sobre<Clase>>(`${API_URL}/clases/${id}`).pipe(map((r) => r.data));
+    }
+
+    actualizar(id: number, datos: ClaseNueva) {
+        return this.http.patch<Sobre<Clase>>(`${API_URL}/clases/${id}`, datos).pipe(map((r) => r.data))
+    }
+
+    eliminar(id: number) {
+        return this.http.delete<Sobre<Clase>>(`${API_URL}/clases/${id}`);
+    }
+
+    listar(q = '') {
+        const params = q ? { q }: undefined;
+        return this.http.get<Sobre<Clase[]>>(`${API_URL}/clases`, {params}).pipe(map((r) => r.data));
+    }
+
 }
