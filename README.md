@@ -58,3 +58,24 @@ Porque los formularios reactivos de Angular (`FormGroup` / `FormControl`) están
 #### 3. ¿Qué diferencia hay entre `canActivate` y `canDeactivate`, y qué casos no cubre la guarda de salida?
 * **Diferencia:** `canActivate` controla la **entrada** a una ruta (verifica si el usuario tiene permiso para acceder antes de cargar el componente), mientras que `canDeactivate` controla la **salida** de una ruta (verifica si el usuario puede abandonar el componente actual, por ejemplo, pidiendo confirmación si hay cambios sin guardar).
 * **Casos que no cubre `canDeactivate`:** Solo intercepta navegaciones internas gestionadas por el **Router de Angular** (cambiar de vista, hacer clic en enlaces internos o usar los botones atrás/adelante dentro de la SPA). No cubre acciones externas a Angular como cerrar la pestaña o ventana del navegador, recargar la página (`F5`) o escribir manualmente una URL externa en la barra de direcciones (para esos casos se requiere el evento nativo `beforeunload` del navegador).
+
+* Ejercicio 1: El tubo de búsqueda
+
+¿Qué diferencia hay entre un Signal y un Observable?
+
+Valor síncrono vs. flujo asíncrono: Un Signal siempre guarda un valor actual que se puede leer de inmediato en cualquier momento (ej. clases()). Un Observable es un flujo de eventos a lo largo del tiempo que pueden emitirse ahora, después o nunca.
+
+Suscripciones y limpieza: Los Signals rastrean sus dependencias y se limpian automáticamente sin riesgo de fugas de memoria. Los Observables requieren suscribirse y desuscribirse explícitamente.
+
+Uso: Los Signals son ideales para manejar el estado de la interfaz, mientras que los Observables sirven para coordinar eventos asíncronos complejos y peticiones HTTP.
+
+Ejercicio 2: La caja de búsqueda
+
+¿Qué problema evita switchMap y qué pasaría con mergeMap?
+
+Problema que evita switchMap: Evita las condiciones de carrera (race conditions) y peticiones innecesarias, ya que cancela automáticamente la petición HTTP anterior si el usuario escribe una nueva búsqueda antes de que la primera termine.
+
+Qué pasaría con mergeMap: Ejecutaría todas las peticiones en paralelo sin cancelar ninguna. Si una búsqueda anterior tarda más en responder que la última (por el RETARDO_MS), terminaría sobrescribiendo la pantalla con resultados desactualizados.
+
+¿Qué pasa si se quita catchError y la API se apaga?
+En RxJS, un error no capturado termina y mata el flujo del Observable de forma permanente. Si se quita catchError y la API falla, el buscador dejará de funcionar por completo; aunque se vuelva a encender el servidor y se siga escribiendo en la caja de búsqueda, no se volverá a hacer ninguna petición hasta recargar toda la página.
